@@ -75,7 +75,7 @@ func (s *Session) DeleteItem(id string, now time.Time) error {
 }
 func (s *Session) Lock(actor string, now time.Time) error {
 	for _, item := range s.Items {
-		if item.Critical && item.State == Todo {
+		if item.Critical && (item.State == Todo || item.State == Blocked) {
 			return ErrUnresolvedRisk
 		}
 	}
@@ -112,7 +112,7 @@ func (s *Session) RecordReplacement(id string, replacementUsed int) error {
 func (s Session) Risks() []string {
 	out := []string{}
 	for _, i := range s.Items {
-		if i.Critical && i.State == Todo {
+		if i.Critical && (i.State == Todo || i.State == Blocked) {
 			out = append(out, i.ID)
 		}
 	}

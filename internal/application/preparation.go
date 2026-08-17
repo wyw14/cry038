@@ -30,7 +30,7 @@ func (p *Preparation) Lock(ctx context.Context, id, actor string) (domain.Sessio
 		return s, err
 	}
 	if err = s.Lock(actor, p.clock()); err != nil {
-		return s, p.repo.Save(ctx, s)
+		return s, err
 	}
 	return s, p.repo.Save(ctx, s)
 }
