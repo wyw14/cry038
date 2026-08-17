@@ -41,3 +41,12 @@ func TestReplacementDoesNotDoubleCountOriginalQuantity(t *testing.T) {
 		t.Fatalf("consumed=%d", s.Items[1].Consumed)
 	}
 }
+
+func TestTemplateSnapshotPipelineDomain(t *testing.T) {
+	tpl := []TemplateItem{{Key: "goggles", Name: "护目镜", Kind: "equipment", Critical: true, DefaultOwner: "assistant", Quantity: 18}}
+	s := GenerateSession("chem-1", "化学", "Lab-2", time.Now().Add(time.Hour), tpl)
+	item := s.Items[0]
+	if item.TemplateKey != "goggles" || item.Owner != "assistant" || !item.Critical || item.Quantity != 18 {
+		t.Fatalf("template defaults were not snapshotted: %+v", item)
+	}
+}

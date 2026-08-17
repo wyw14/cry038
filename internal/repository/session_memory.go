@@ -26,7 +26,18 @@ func (m *SessionMemory) Get(_ context.Context, id string) (domain.Session, error
 	if !ok {
 		return s, errors.New("session not found")
 	}
-	s.Items = append([]domain.ChecklistItem(nil), s.Items...)
+	items := make([]domain.ChecklistItem, len(s.Items))
+	for i, item := range s.Items {
+		items[i] = domain.ChecklistItem{
+			ID:       item.ID,
+			Name:     item.Name,
+			Kind:     item.Kind,
+			State:    item.State,
+			Note:     item.Note,
+			Timeline: append([]domain.Event(nil), item.Timeline...),
+		}
+	}
+	s.Items = items
 	return s, nil
 }
 func (m *SessionMemory) Save(_ context.Context, s domain.Session) error {
@@ -35,6 +46,18 @@ func (m *SessionMemory) Save(_ context.Context, s domain.Session) error {
 	if old, ok := m.data[s.ID]; ok && old.Version+1 != s.Version {
 		return errors.New("session version conflict")
 	}
+	items := make([]domain.ChecklistItem, len(s.Items))
+	for i, item := range s.Items {
+		items[i] = domain.ChecklistItem{
+			ID:       item.ID,
+			Name:     item.Name,
+			Kind:     item.Kind,
+			State:    item.State,
+			Note:     item.Note,
+			Timeline: append([]domain.Event(nil), item.Timeline...),
+		}
+	}
+	s.Items = items
 	m.data[s.ID] = s
 	return nil
 }
