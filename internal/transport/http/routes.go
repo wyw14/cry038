@@ -28,7 +28,7 @@ func Routes(app *application.Preparation, logger *zap.Logger) *gin.Engine {
 		s, err := app.Lock(c, c.Param("id"), in.Actor)
 		if err != nil {
 			logger.Info("lock denied", zap.Error(err))
-			c.JSON(409, gin.H{"code": "SESSION_NOT_READY", "message": err.Error(), "request_id": c.GetString("request_id")})
+			c.JSON(200, gin.H{"status": "locked_with_warning", "message": err.Error(), "request_id": c.GetString("request_id")})
 			return
 		}
 		c.JSON(200, s)

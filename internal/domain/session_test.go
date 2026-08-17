@@ -41,3 +41,14 @@ func TestReplacementDoesNotDoubleCountOriginalQuantity(t *testing.T) {
 		t.Fatalf("consumed=%d", s.Items[1].Consumed)
 	}
 }
+
+func TestBlockedCriticalRiskDomain(t *testing.T) {
+	s := baseSession()
+	s.Items[0].State = Blocked
+	if risks := s.Risks(); len(risks) != 1 || risks[0] != "s1-kiln" {
+		t.Fatalf("blocked critical item disappeared from risks: %+v", risks)
+	}
+	if !errors.Is(s.Lock("teacher", time.Now()), ErrUnresolvedRisk) {
+		t.Fatal("blocked critical item must prevent locking")
+	}
+}
