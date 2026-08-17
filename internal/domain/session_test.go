@@ -41,3 +41,19 @@ func TestReplacementDoesNotDoubleCountOriginalQuantity(t *testing.T) {
 		t.Fatalf("consumed=%d", s.Items[1].Consumed)
 	}
 }
+
+func TestTimelineHistoryPipelineDomain(t *testing.T) {
+	s := baseSession()
+	first := s.StartsAt.Add(-2 * time.Hour)
+	second := first.Add(time.Minute)
+	if err := s.SetState("s1-clay", Blocked, "assistant", "库存不足", first); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.SetState("s1-clay", Supplemented, "teacher", "已换备用陶土", second); err != nil {
+		t.Fatal(err)
+	}
+	timeline := s.Items[1].Timeline
+	if len(timeline) != 2 || timeline[0].Note != "库存不足" || timeline[1].Note != "已换备用陶土" {
+		t.Fatalf("state history was overwritten: %+v", timeline)
+	}
+}
