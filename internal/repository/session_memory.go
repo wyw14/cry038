@@ -8,14 +8,16 @@ import (
 )
 
 type SessionMemory struct {
-	mu   sync.RWMutex
-	data map[string]domain.Session
+	mu      sync.RWMutex
+	data    map[string]domain.Session
+	reviews []string
 }
 
 func NewSessionMemory(seed ...domain.Session) *SessionMemory {
 	m := &SessionMemory{data: map[string]domain.Session{}}
 	for _, s := range seed {
 		m.data[s.ID] = s
+		m.reviews = s.Review
 	}
 	return m
 }
@@ -27,6 +29,7 @@ func (m *SessionMemory) Get(_ context.Context, id string) (domain.Session, error
 		return s, errors.New("session not found")
 	}
 	s.Items = append([]domain.ChecklistItem(nil), s.Items...)
+	s.Review = m.reviews
 	return s, nil
 }
 func (m *SessionMemory) Save(_ context.Context, s domain.Session) error {
@@ -35,6 +38,8 @@ func (m *SessionMemory) Save(_ context.Context, s domain.Session) error {
 	if old, ok := m.data[s.ID]; ok && old.Version+1 != s.Version {
 		return errors.New("session version conflict")
 	}
+	m.reviews = s.Review
+	s.Review = m.reviews
 	m.data[s.ID] = s
 	return nil
 }

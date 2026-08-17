@@ -41,3 +41,16 @@ func TestReplacementDoesNotDoubleCountOriginalQuantity(t *testing.T) {
 		t.Fatalf("consumed=%d", s.Items[1].Consumed)
 	}
 }
+
+func TestReviewIsolationDomain(t *testing.T) {
+	s := baseSession()
+	if !s.AddReview("补充绝缘手套") || !s.AddReview("调整陶土备量") {
+		t.Fatal("distinct review issues should be retained")
+	}
+	if s.AddReview("补充绝缘手套") {
+		t.Fatal("duplicate review issue should be idempotent")
+	}
+	if len(s.Review) != 2 || s.Review[0] != "补充绝缘手套" || s.Review[1] != "调整陶土备量" {
+		t.Fatalf("review history was overwritten: %+v", s.Review)
+	}
+}

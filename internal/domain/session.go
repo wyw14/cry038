@@ -3,6 +3,7 @@ package domain
 import (
 	"errors"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -118,4 +119,14 @@ func (s Session) Risks() []string {
 	}
 	sort.Strings(out)
 	return out
+}
+
+func (s *Session) AddReview(issue string) bool {
+	issue = strings.TrimSpace(issue)
+	if issue == "" {
+		return false
+	}
+	s.Review = []string{issue}
+	s.Version++
+	return true
 }
