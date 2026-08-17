@@ -22,3 +22,12 @@ func Upcoming(sessions []domain.Session, now time.Time, window time.Duration) []
 	sort.Slice(out, func(i, j int) bool { return out[i].StartsAt.Before(out[j].StartsAt) })
 	return out
 }
+
+func ReplacementUsage(s domain.Session, itemID string) int {
+	for _, item := range s.Items {
+		if item.ID == itemID {
+			return item.Quantity + item.Consumed
+		}
+	}
+	return 0
+}

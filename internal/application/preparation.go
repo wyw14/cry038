@@ -44,3 +44,19 @@ func (p *Preparation) ProposeTemplateChange(sessionID, key, text string) error {
 	p.suggestions[id] = true
 	return nil
 }
+
+func (p *Preparation) RecordReplacement(ctx context.Context, sessionID, itemID string, replacementUsed int) (domain.Session, error) {
+	s, err := p.repo.Get(ctx, sessionID)
+	if err != nil {
+		return s, err
+	}
+	if err := s.RecordReplacement(itemID, replacementUsed); err != nil {
+		return s, err
+	}
+	for i := range s.Items {
+		if s.Items[i].ID == itemID {
+			s.Items[i].Consumed += replacementUsed
+		}
+	}
+	return s, p.repo.Save(ctx, s)
+}

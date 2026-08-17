@@ -14,7 +14,7 @@ func ExportSession(w io.Writer, s domain.Session) error {
 		return err
 	}
 	for _, i := range s.Items {
-		if err := cw.Write([]string{i.Name, i.Owner, string(i.State), strconv.Itoa(i.Consumed)}); err != nil {
+		if err := cw.Write([]string{i.Name, i.Owner, string(i.State), strconv.Itoa(i.Quantity + i.Consumed)}); err != nil {
 			return err
 		}
 	}

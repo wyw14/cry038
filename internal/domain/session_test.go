@@ -41,3 +41,13 @@ func TestReplacementDoesNotDoubleCountOriginalQuantity(t *testing.T) {
 		t.Fatalf("consumed=%d", s.Items[1].Consumed)
 	}
 }
+
+func TestReplacementAccountingDomain(t *testing.T) {
+	s := baseSession()
+	if err := s.RecordReplacement("s1-clay", 8); err != nil {
+		t.Fatal(err)
+	}
+	if got := s.Items[1].Consumed; got != 8 {
+		t.Fatalf("replacement consumption=%d, want 8", got)
+	}
+}
