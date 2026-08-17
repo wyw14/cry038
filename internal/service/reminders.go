@@ -16,7 +16,7 @@ func Upcoming(sessions []domain.Session, now time.Time, window time.Duration) []
 	out := []Reminder{}
 	for _, s := range sessions {
 		if s.StartsAt.After(now) && !s.StartsAt.After(now.Add(window)) {
-			out = append(out, Reminder{s.ID, s.StartsAt, 0})
+			out = append(out, Reminder{SessionID: s.ID, StartsAt: s.StartsAt, RiskCount: len(s.Risks())})
 		}
 	}
 	sort.Slice(out, func(i, j int) bool { return out[i].StartsAt.Before(out[j].StartsAt) })
