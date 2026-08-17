@@ -91,7 +91,7 @@ func (s *Session) SetState(id string, state ItemState, actor, note string, now t
 		if s.Items[i].ID == id {
 			s.Items[i].State = state
 			s.Items[i].Note = note
-			s.Items[i].Timeline = []Event{{now, actor, "state:" + string(state), note}}
+			s.Items[i].Timeline = append(s.Items[i].Timeline, Event{now, actor, "state:" + string(state), note})
 			s.Version++
 			return nil
 		}
