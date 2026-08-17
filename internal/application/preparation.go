@@ -53,10 +53,5 @@ func (p *Preparation) RecordReplacement(ctx context.Context, sessionID, itemID s
 	if err := s.RecordReplacement(itemID, replacementUsed); err != nil {
 		return s, err
 	}
-	for i := range s.Items {
-		if s.Items[i].ID == itemID {
-			s.Items[i].Consumed += replacementUsed
-		}
-	}
 	return s, p.repo.Save(ctx, s)
 }

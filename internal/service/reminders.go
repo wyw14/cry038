@@ -26,7 +26,7 @@ func Upcoming(sessions []domain.Session, now time.Time, window time.Duration) []
 func ReplacementUsage(s domain.Session, itemID string) int {
 	for _, item := range s.Items {
 		if item.ID == itemID {
-			return item.Quantity + item.Consumed
+			return item.Consumed
 		}
 	}
 	return 0
