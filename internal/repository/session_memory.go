@@ -28,14 +28,8 @@ func (m *SessionMemory) Get(_ context.Context, id string) (domain.Session, error
 	}
 	items := make([]domain.ChecklistItem, len(s.Items))
 	for i, item := range s.Items {
-		items[i] = domain.ChecklistItem{
-			ID:       item.ID,
-			Name:     item.Name,
-			Kind:     item.Kind,
-			State:    item.State,
-			Note:     item.Note,
-			Timeline: append([]domain.Event(nil), item.Timeline...),
-		}
+		items[i] = item
+		items[i].Timeline = append([]domain.Event(nil), item.Timeline...)
 	}
 	s.Items = items
 	return s, nil
@@ -48,14 +42,8 @@ func (m *SessionMemory) Save(_ context.Context, s domain.Session) error {
 	}
 	items := make([]domain.ChecklistItem, len(s.Items))
 	for i, item := range s.Items {
-		items[i] = domain.ChecklistItem{
-			ID:       item.ID,
-			Name:     item.Name,
-			Kind:     item.Kind,
-			State:    item.State,
-			Note:     item.Note,
-			Timeline: append([]domain.Event(nil), item.Timeline...),
-		}
+		items[i] = item
+		items[i].Timeline = append([]domain.Event(nil), item.Timeline...)
 	}
 	s.Items = items
 	m.data[s.ID] = s

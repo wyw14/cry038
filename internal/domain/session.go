@@ -52,7 +52,7 @@ type Session struct {
 func GenerateSession(id, course, room string, start time.Time, template []TemplateItem) Session {
 	items := make([]ChecklistItem, len(template))
 	for i, t := range template {
-		items[i] = ChecklistItem{ID: id + "-" + t.Key, Name: t.Name, Kind: t.Kind, State: Todo}
+		items[i] = ChecklistItem{ID: id + "-" + t.Key, TemplateKey: t.Key, Name: t.Name, Kind: t.Kind, Owner: t.DefaultOwner, Critical: t.Critical, Quantity: t.Quantity, State: Todo}
 	}
 	return Session{ID: id, Course: course, Classroom: room, StartsAt: start, Items: items}
 }
