@@ -1,0 +1,9 @@
+services:
+  classroom-db:
+    image: postgres:17
+    environment: {POSTGRES_DB: classroom_ready, POSTGRES_PASSWORD: postgres}
+  classroom-ready:
+    build: .
+    ports: ["8082:8080"]
+    environment: {CLASSROOM_DATABASE_URL: "postgres://postgres:postgres@classroom-db:5432/classroom_ready?sslmode=disable"}
+    depends_on: [classroom-db]

@@ -1,0 +1,8 @@
+openapi: 3.0.3
+info: {title: Classroom Readiness API, version: 1.0.0}
+paths:
+  /api/v1/sessions/{id}/lock:
+    post:
+      summary: 课堂开始前锁定确认
+      parameters: [{in: path, name: id, required: true, schema: {type: string}}]
+      responses: {'200': {description: locked}, '409': {description: unresolved critical risk}}

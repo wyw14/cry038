@@ -1,0 +1,3 @@
+CREATE TABLE IF NOT EXISTS class_sessions(id text PRIMARY KEY,course text NOT NULL,classroom text NOT NULL,starts_at timestamptz NOT NULL,locked_at timestamptz,version bigint NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS preparation_items(id text PRIMARY KEY,session_id text NOT NULL REFERENCES class_sessions(id),template_key text NOT NULL,name text NOT NULL,critical boolean NOT NULL,state text NOT NULL,quantity integer NOT NULL,consumed integer NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS preparation_events(id bigserial PRIMARY KEY,item_id text NOT NULL REFERENCES preparation_items(id),actor text NOT NULL,action text NOT NULL,note text NOT NULL,created_at timestamptz NOT NULL);

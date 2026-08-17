@@ -1,0 +1,10 @@
+.env
+out/
+class-exports/
+web/dist/
+web/node_modules/
+*.cover
+.codex/
+.claude/
+.gocache/
+.gomodcache/

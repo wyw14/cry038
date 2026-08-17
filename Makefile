@@ -1,0 +1,9 @@
+.PHONY: check api ui
+check:
+	go test ./...
+	go test -race ./...
+	go vet ./...
+api:
+	go run ./cmd/server
+ui:
+	cd web && npm ci && npm run test && npm run build
