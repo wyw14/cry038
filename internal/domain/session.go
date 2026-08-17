@@ -101,7 +101,7 @@ func (s *Session) SetState(id string, state ItemState, actor, note string, now t
 func (s *Session) RecordReplacement(id string, replacementUsed int) error {
 	for i := range s.Items {
 		if s.Items[i].ID == id {
-			s.Items[i].Consumed += s.Items[i].Quantity + replacementUsed
+			s.Items[i].Consumed += replacementUsed
 			s.Items[i].State = Supplemented
 			s.Version++
 			return nil
