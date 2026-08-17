@@ -18,8 +18,8 @@ func ExportSession(w io.Writer, s domain.Session) error {
 			return err
 		}
 	}
-	if len(s.Review) > 0 {
-		if err := cw.Write([]string{"复盘", "", "review", s.Review[len(s.Review)-1]}); err != nil {
+	for _, review := range s.Review {
+		if err := cw.Write([]string{"复盘", "", "review", review}); err != nil {
 			return err
 		}
 	}

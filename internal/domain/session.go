@@ -126,7 +126,12 @@ func (s *Session) AddReview(issue string) bool {
 	if issue == "" {
 		return false
 	}
-	s.Review = []string{issue}
+	for _, existing := range s.Review {
+		if existing == issue {
+			return false
+		}
+	}
+	s.Review = append(s.Review, issue)
 	s.Version++
 	return true
 }

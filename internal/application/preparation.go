@@ -37,7 +37,7 @@ func (p *Preparation) Lock(ctx context.Context, id, actor string) (domain.Sessio
 func (p *Preparation) ProposeTemplateChange(sessionID, key, text string) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	id := key
+	id := sessionID + "/" + key
 	if p.suggestions[id] {
 		return ErrSuggestionAlreadyReviewed
 	}
